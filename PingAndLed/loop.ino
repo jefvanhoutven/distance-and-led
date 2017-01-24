@@ -1,30 +1,36 @@
 SmoothSensor pingSensorSmooth;
-
+boolean fastLed = false;
 void loop()
 {
     //int distance = getDistance();
     int sensor = getDistance();
     int distance = pingSensorSmooth.ReadAverage(sensor);
-    
-    //Serial.print(sensor);
-    //Serial.print(",");
+    //int brightness = 255-distance*1.25;
+    int brightness = 255;
+    uint32_t color;
     Serial.println(distance);
 
-    uint32_t color;
-    if(distance < 60){
+    if(distance < 40){
         color = green;
+        fastLed = false;
     }
     else if(distance < 120){
         color = blue;
+        fastLed = false;   
     }
-    else{
+    else if(distance >120 && distance < 170){
         color = red;
+        fastLed = false;  
+    }
+    else if( distance > 170 ){
+      fastLed = true;      
     }
 
-    int brightness = 255;
-    //int brightness = 255-distance*1.25;
-    updateLedStrip(brightness, color);
+    switch(fastLed){
+      case false: updateLedStrip(brightness, color); break;
+      case true:  Rainbow(); break;
+      }
     
-    //setMatrixForDistance(distance);
     delay(10);
+    //setMatrixForDistance(distance);
 }

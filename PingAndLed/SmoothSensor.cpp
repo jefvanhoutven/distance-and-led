@@ -1,10 +1,11 @@
 class SmoothSensor{
     private:
-        static const int numValues = 3;
+        static const int numValues = 1;
         int values[numValues];      // the readings from the analog input
         int index = 0;              // the index of the current reading
         int outOfRange = 0;
         int bigDifference = 0;
+        
     public:
         SmoothSensor(){
             // initialize array to 0
@@ -14,7 +15,7 @@ class SmoothSensor{
         };
         
         int ReadAverage(int sensorValue){
-
+            
             int difference = LastAverage() - sensorValue;
             if(difference > 100 || difference < -100){
                 bigDifference++;
